@@ -26,10 +26,10 @@ module.exports = {
   },
   find: async (req, res, next) => {
     try {
-      const { search, searchBy="message", order='desc', orderBy='createdAt' } = req.query;
+      const { search="", searchBy="message", order='desc', orderBy='createdAt' } = req.query;
       
       //Find, sort and paginate the Post
-      const thePost = await Post.paginate({ [searchBy]: search }, { sort: { [orderBy]: order } });
+      const thePost = await Post.paginate({ [searchBy]: { $regex : `${search}` } }, { sort: { [orderBy]: order } });
 
       //Send the response
       res.send({
